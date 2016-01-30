@@ -5,6 +5,7 @@ var player;
 var cursors;
 var marilyn;
 var score = 0;
+var scoreText;
 
 function getRandomPosX() {
     var world = new Phaser.World(game);
@@ -18,6 +19,8 @@ function getRandomPosY() {
 
 function saveMarilyn(player, marilyn) {
     marilyn.reset(getRandomPosX(), getRandomPosY());
+    score += 20;
+    scoreText.text = 'score: ' + score;
 }
 
 function preload() {
@@ -27,6 +30,7 @@ function preload() {
 
 function create() {
     game.add.text(220, 300, "Hollywood Bld OF DRUGS!!", {fill: 'white'}); // background
+    scoreText = game.add.text(8, 8, 'score: 0', {fontSize: '18px', fill: 'white'});
     game.physics.startSystem(Phaser.Physics.ARCADE); // starter la physique
 
     marilyn = game.add.sprite(getRandomPosX(), getRandomPosY(), 'marylin'); // marilyn random
