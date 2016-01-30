@@ -11,19 +11,40 @@ var isOdd = true;
 var cmpt = 0
 
 
+function youDieded(player, pill) {
+    game.world.removeAll();
+    game.add.text(100, 100, "YOU DIEDED!", {fontSize: '32px', fill: 'white'});
+}
+
 function createPill() {
     var pill;
     if(cmpt % 9 == 0)
     {
         if(isOdd)
         {
-            pill = pillGroup.create(getRandomPosX(), 0, 'pill');
-            pill.body.velocity.y = 300;
+            if(Math.random() < 0.50)
+            {
+                pill = pillGroup.create(getRandomPosX(), game.world._height, 'pill');
+                pill.body.velocity.y = -300;
+            }
+            else
+            {
+                pill = pillGroup.create(getRandomPosX(), 0, 'pill');
+                pill.body.velocity.y = 300;
+            }
         }
         else
         {
-            pill = pillGroup.create(0, getRandomPosY(), 'pill');
-            pill.body.velocity.x = 300;
+            if(Math.random() < 0.50)
+            {
+                pill = pillGroup.create(game.world._width, getRandomPosY(), 'pill');
+                pill.body.velocity.x = -300;
+            }
+            else
+            {
+                pill = pillGroup.create(0, getRandomPosY(), 'pill');
+                pill.body.velocity.x = 300;
+            }
         }
         pill.body.collideWorldBounds = false;
     }
@@ -76,7 +97,6 @@ function create() {
 }
 
 function update() {
-    //game.add.text(50, 50. 'allo', {fill: 'white'});
     isOdd = !isOdd;
     cmpt++;
     player.body.velocity.x = 0;
@@ -119,4 +139,5 @@ function update() {
         player.animations.stop();
     }
     game.physics.arcade.overlap(player, marilyn, saveMarilyn, null, this);
+    game.physics.arcade.overlap(player, pillGroup, youDieded, null, this);
 }
