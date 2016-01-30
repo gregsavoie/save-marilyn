@@ -13,7 +13,12 @@ var cmpt = 0
 
 function youDieded(player, pill) {
     game.world.removeAll();
-    game.add.text(100, 100, "YOU DIEDED!", {fontSize: '32px', fill: 'white'});
+    game.add.text(100, 150, 'Score: ' + score, {fill: 'white'});
+    game.add.text(100, 200, 'You failed!', {fontSize: '26px', fill: 'white'});
+    game.add.text(100, 250, 'Poor Marilyn ODed... AGAIN!', {fontSize: '20px', fill: 'white'});
+    game.add.sprite(400, 100, 'marilyn_fin');
+
+    game.add.text(100, 500, 'Press f5 to play again!', {fontSize: '14px', fill: 'white'});
 }
 
 function createPill() {
@@ -69,6 +74,7 @@ function saveMarilyn(player, marilyn) {
 function preload() {
     game.load.image('marylin', 'img/marylin.png');
     game.load.image('pill', 'img/pill.png');
+    game.load.image('marilyn_fin', 'img/marilyn_fin.png');
     game.load.spritesheet('player', 'img/player.png', 57.5, 75);
 }
 
