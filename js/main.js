@@ -11,11 +11,14 @@ var isOdd = true;
 var cmpt = 0
 
 
+function startGame() {
+}
+
 function youDieded(player, pill) {
     game.world.removeAll();
     game.add.text(100, 150, 'Score: ' + score, {fill: 'white'});
     game.add.text(100, 200, 'You failed!', {fontSize: '26px', fill: 'white'});
-    game.add.text(100, 250, 'Poor Marilyn ODed... AGAIN!', {fontSize: '20px', fill: 'white'});
+    game.add.text(100, 250, 'Marilyn ODed... AGAIN!', {fontSize: '20px', fill: 'white'});
     game.add.sprite(400, 100, 'marilyn_fin');
 
     game.add.text(100, 500, 'Press f5 to play again!', {fontSize: '14px', fill: 'white'});
