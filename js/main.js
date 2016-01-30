@@ -4,6 +4,16 @@ var game = new Phaser.Game(800, 600, Phaser.AUTO, 'game',
 var player;
 var cursors;
 
+function getRandomPosX() {
+    var world = new Phaser.World(game);
+    return Math.floor((Math.random() * world._width) + 1);
+}
+
+function getRandomPosY() {
+    var world = new Phaser.World(game);
+    return Math.floor((Math.random() * world._height) + 1);
+}
+
 function preload() {
     game.load.image('blue_star', 'img/blue_star.png');
     game.load.spritesheet('player', 'img/player.png', 57.5, 75);
@@ -18,7 +28,7 @@ function create() {
     cursors = game.input.keyboard.createCursorKeys(); // linker les touches
 
     /* setter le player... */
-    player = game.add.sprite(0, 0, 'player', 1);
+    player = game.add.sprite(350, 220, 'player', 1);
     game.physics.arcade.enable(player);
     player.animations.add('left', [8, 9, 10, 11], 10, true);
     player.animations.add('right', [4, 5, 6, 7], 10, true);
