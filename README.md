@@ -1,1 +1,1 @@
-greg et les autres.
+greg et l'autres.
