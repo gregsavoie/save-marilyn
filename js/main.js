@@ -19,6 +19,9 @@ var life3;
 var ballGroup;
 var counter = 0;
 var countdown = 0;
+var nbBoules = 0;
+var pillSpeed = 0;
+var nbPills = 0;
 
 function putBackOpacity() {
     player.alpha = 1;
@@ -30,8 +33,17 @@ function removeOpacity() {
 
 function updateCounter() {
 
-	counter++;
-	countdown.setText('Time to next Supernovae: ' + (5 - counter%6));
+    counter++;
+    countdown.setText('Time to next Supernovae: ' + (5 - counter%6));
+}
+
+function updateDifficulty(){
+    if (score % 100 == 0) {
+        nbBoules  = nbBoules + 2;
+        //pillSpeed  = pillSpeed + 10;
+        if (nbPills > 6) {nbPills = nbPills - 2;}
+        //game.add.text(getRandomPosX(),getRandomPosY(),nbPills,{fill: 'white'});
+    }
 }
 
 function explosionMenu() {
@@ -50,7 +62,7 @@ function explosion() {
     exp.speed = 600;
 
 
-    for (var i = 0; i < 10; i++) {
+    for (var i = 0; i < nbBoules; i++) {
         var ball = ballGroup.create(marilyn.x + 17.5, marilyn.y + 22.5, 'ball');
         ball.anchor.setTo(0.5,0.5);
         ball.animations.add('powerball',[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15],100,true);
@@ -60,10 +72,9 @@ function explosion() {
         ball.body.velocity.x = (Math.random()*(2)-1)*100;
         ball.body.velocity.y = (Math.random()*(2)-1)*100;
         ball.body.collideWorldBounds = false;
-    };
+    }
 
     marilyn.reset(getRandomPosXForMarilyn(), getRandomPosYForMarilyn());
-    counter = 0;
     game.time.events.add(5000, explosion, this);
 }
 
@@ -97,19 +108,25 @@ function startGame() {
     gameIsStarted = true;
     gameIsFinished = false;
     score = 0;
+    counter = 0;
+    pillSpeed = 300;
+    nbBoules = 5;
+    nbPills = 21;
+
 
     /* setter les explosions */
-	ballGroup = game.add.group();
+    ballGroup = game.add.group();
     ballGroup.enableBody = true; 
     game.physics.arcade.enable(ballGroup);
 
 
-	countdown = game.add.text(600, 20, 'Time to next Supernovae: 5', { fontSize: "18px", fill: "white"});
+    countdown = game.add.text(600, 20, 'Time to next Supernovae: 5', { fontSize: "18px", fill: "white"});
     countdown.anchor.setTo(0.5, 0.5);
 
 
     game.time.events.add(5000, explosion, this);
     game.time.events.loop(Phaser.Timer.SECOND, updateCounter, this);
+
 }
 
 function youDieded() {
@@ -149,19 +166,19 @@ function drugIntake(player, obj) {
 
 function createPill() {
     var pill;
-    if(cmpt % 9 == 0)
+    if(cmpt % nbPills == 0)
     {
         if(isOdd)
         {
             if(Math.random() < 0.50)
             {
                 pill = pillGroup.create(getRandomPosX(), game.world._height, 'pill');
-                pill.body.velocity.y = -300;
+                pill.body.velocity.y = pillSpeed * -1;
             }
             else
             {
                 pill = pillGroup.create(getRandomPosX(), 0, 'pill');
-                pill.body.velocity.y = 300;
+                pill.body.velocity.y = pillSpeed;
             }
         }
         else
@@ -169,12 +186,12 @@ function createPill() {
             if(Math.random() < 0.50)
             {
                 pill = pillGroup.create(game.world._width, getRandomPosY(), 'pill');
-                pill.body.velocity.x = -300;
+                pill.body.velocity.x = pillSpeed * -1;
             }
             else
             {
                 pill = pillGroup.create(0, getRandomPosY(), 'pill');
-                pill.body.velocity.x = 300;
+                pill.body.velocity.x = pillSpeed;
             }
         }
         pill.body.collideWorldBounds = false;
@@ -215,6 +232,7 @@ function saveMarilyn(player, marilyn) {
     marilyn.reset(getRandomPosXForMarilyn(), getRandomPosYForMarilyn());
     score += 20;
     scoreText.text = 'score: ' + score;
+    updateDifficulty();
     game.time.events.removeAll();
     counter = 0;
     game.time.events.loop(Phaser.Timer.SECOND, updateCounter, this);
