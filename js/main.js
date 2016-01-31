@@ -150,7 +150,7 @@ function youDieded() {
 
     game.add.text(700, 550, 'Made by:', {fontSize: '10px', fill: 'white'});
     game.add.text(700, 560, 'Gregory Savoie', {fontSize: '10px', fill: 'white'});
-    game.add.text(700, 570, 'Thomas Rebaut', {fontSize: '10px', fill: 'white'});
+    game.add.text(700, 570, 'Thomas Rebaud', {fontSize: '10px', fill: 'white'});
 }
 
 function medKitTaken(player, medkit) {
@@ -176,7 +176,7 @@ function drugIntake(player, obj) {
     if (life_3_bool)
     {
         life_3_bool = false;
-        life3.visible = false;
+        life3.visible = false;0
     }
     else if (life_2_bool)
     {
@@ -263,6 +263,10 @@ score += 20;
     scoreText.text = 'score: ' + score;
     updateDifficulty();
     game.time.events.removeAll();
+    if (player.alpha != 1)
+    {
+        player.alpha = 1;
+    }
     counter = 0;
     game.time.events.loop(Phaser.Timer.SECOND, updateCounter, this);
     game.time.events.add(4000, explosion, this);
@@ -295,9 +299,9 @@ function create() {
     marilyn = game.add.sprite(300, 130, 'marylin');
     game.add.sprite(480, 185, 'pill');
     game.add.sprite(545, 215, 'pill');
-    game.add.sprite(370, 245, 'blue_star');
-    game.add.sprite(380, 245, 'blue_star');
-    game.add.sprite(390, 245, 'blue_star');
+    game.add.sprite(370, 235, 'blue_star');
+    game.add.sprite(390, 235, 'blue_star');
+    game.add.sprite(410, 235, 'blue_star');
     game.add.sprite(430, 295, 'medkit');
 
     game.physics.startSystem(Phaser.Physics.ARCADE); // starter la physique
