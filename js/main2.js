@@ -13,8 +13,8 @@ function preload() {
 
 function explosion() {
 
-    balls = game.add.group();
-    balls.enableBody = true; 
+    //balls = game.add.group();
+    //balls.enableBody = true; 
 
     exp = game.add.sprite(395,295, 'explosion');
     exp.anchor.setTo(0.5,0.5);
@@ -38,6 +38,9 @@ function explosion() {
 }
 
 function create() {
+	
+	balls = game.add.group();
+    balls.enableBody = true; 
 
     game.physics.startSystem(Phaser.Physics.ARCADE);
     game.time.events.repeat(Phaser.Timer.SECOND*10,10,explosion, this);
