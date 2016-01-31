@@ -39,9 +39,9 @@ function updateCounter() {
 }
 
 function updateDifficulty(){
-    if (score % 100 == 0) {
-        nbBoules  = nbBoules + 2;
-        if (nbPills > 6) {nbPills = nbPills - 2;}
+    if (score % 80 == 0) {
+        nbBoules  = nbBoules + 3;
+        if (nbPills > 8) {nbPills = nbPills - 2;}
     }
     if (score % 200 == 0)
     {
@@ -118,7 +118,7 @@ function startGame() {
     counter = 0;
     pillSpeed = 300;
     nbBoules = 5;
-    nbPills = 21;
+    nbPills = 23;
 
 
     /* setter les explosions */
