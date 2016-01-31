@@ -54,7 +54,7 @@ function explosion() {
         ball.body.collideWorldBounds = false;
     };
 
-    marilyn.reset(getRandomPosX(), getRandomPosY());
+    marilyn.reset(getRandomPosXForMarilyn(), getRandomPosYForMarilyn());
     counter = 0;
     game.time.events.add(10000, explosion, this);
 }
@@ -65,7 +65,7 @@ function startGame() {
     game.add.text(320, 330, "OF DRUGS!!", {fill: 'white'}); 
     scoreText = game.add.text(8, 8, 'score: 0', {fontSize: '18px', fill: 'white'}); // affichage du score;
     player = game.add.sprite(350, 220, 'player', 1);
-    marilyn = game.add.sprite(getRandomPosX(), getRandomPosY(), 'marylin');
+    marilyn = game.add.sprite(getRandomPosXForMarilyn(), getRandomPosYForMarilyn(), 'marylin');
     life1 = game.add.sprite(780, 5, 'blue_star');
     life2 = game.add.sprite(770, 5, 'blue_star');
     life3 = game.add.sprite(760, 5, 'blue_star');
@@ -166,6 +166,26 @@ function createPill() {
     }
 }
 
+function getRandomPosXForMarilyn() {
+    var world = new Phaser.World(game);
+    var posX = Math.floor(Math.random() * world._width);
+    if (posX + 35 > world._width)
+    {
+        posX = world._width - 35;
+    }
+    return posX;
+}
+
+function getRandomPosYForMarilyn() {
+    var world = new Phaser.World(game);
+    var posY = Math.floor(Math.random() * world._height);
+    if (posY + 45 > world._height)
+    {
+        posY = world._height - 45;
+    }
+    return posY;
+}
+
 function getRandomPosX() {
     var world = new Phaser.World(game);
     return Math.floor(Math.random() * world._width);
@@ -177,7 +197,7 @@ function getRandomPosY() {
 }
 
 function saveMarilyn(player, marilyn) {
-    marilyn.reset(getRandomPosX(), getRandomPosY());
+    marilyn.reset(getRandomPosXForMarilyn(), getRandomPosYForMarilyn());
     score += 20;
     scoreText.text = 'score: ' + score;
     game.time.events.removeAll();
@@ -262,6 +282,7 @@ function render() {
         }
         else
         {
+            game.time.events.removeAll();
             startGame();
         }
         if (gameIsFinished)
