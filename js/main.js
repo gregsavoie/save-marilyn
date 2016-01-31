@@ -147,6 +147,10 @@ function youDieded() {
     game.add.text(100, 500, 'Press up arrow to play again!', {fontSize: '14px', fill: 'white'});
     cursors = game.input.keyboard.createCursorKeys(); // linker les touches
     gameIsFinished = true;
+
+    game.add.text(700, 550, 'Made by:', {fontSize: '10px', fill: 'white'});
+    game.add.text(700, 560, 'Gregory Savoie', {fontSize: '10px', fill: 'white'});
+    game.add.text(700, 570, 'Thomas Rebaut', {fontSize: '10px', fill: 'white'});
 }
 
 function medKitTaken(player, medkit) {
@@ -166,9 +170,9 @@ function medKitTaken(player, medkit) {
 function drugIntake(player, obj) {
     obj.kill();
     game.time.events.add(0, removeOpacity, this);
-    game.time.events.add(25, putBackOpacity, this);
-    game.time.events.add(50, removeOpacity, this);
-    game.time.events.add(75, putBackOpacity, this);
+    game.time.events.add(50, putBackOpacity, this);
+    game.time.events.add(75, removeOpacity, this);
+    game.time.events.add(100, putBackOpacity, this);
     if (life_3_bool)
     {
         life_3_bool = false;
