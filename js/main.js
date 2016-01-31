@@ -16,7 +16,7 @@ var life_3_bool = true;
 var life1;
 var life2;
 var life3;
-
+var ballGroup;
 var counter = 0;
 var countdown = 0;
 
@@ -43,7 +43,7 @@ function explosion() {
 
 
     for (var i = 0; i < 10; i++) {
-        var ball = balls.create(marilyn.x + 17.5, marilyn.y + 22.5, 'ball');
+        var ball = ballGroup.create(marilyn.x + 17.5, marilyn.y + 22.5, 'ball');
         ball.anchor.setTo(0.5,0.5);
         ball.animations.add('powerball',[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15],100,true);
         ball.play('powerball');
@@ -91,8 +91,10 @@ function startGame() {
     score = 0;
 
     /* setter les explosions */
-	balls = game.add.group();
-    balls.enableBody = true; 
+	ballGroup = game.add.group();
+    ballGroup.enableBody = true; 
+    game.physics.arcade.enable(ballGroup);
+
 
 	countdown = game.add.text(600, 20, 'Time to next Supernovae: 10', { fontSize: "18px", fill: "white"});
     countdown.anchor.setTo(0.5, 0.5);
@@ -104,6 +106,7 @@ function startGame() {
 
 function youDieded() {
     game.world.removeAll();
+    game.time.events.removeAll();
     game.add.text(100, 150, 'Score: ' + score, {fill: 'white'});
     game.add.text(100, 200, 'You failed!', {fontSize: '26px', fill: 'white'});
     game.add.text(100, 250, 'Marilyn ODed... AGAIN!', {fontSize: '20px', fill: 'white'});
@@ -114,8 +117,8 @@ function youDieded() {
     gameIsFinished = true;
 }
 
-function drugIntake(player, pill) {
-    pill.kill();
+function drugIntake(player, obj) {
+    obj.kill();
     if (life_3_bool)
     {
         life_3_bool = false;
@@ -307,5 +310,6 @@ function render() {
         player.animations.stop();
     }
     game.physics.arcade.overlap(player, marilyn, saveMarilyn, null, this);
-    //game.physics.arcade.overlap(player, pillGroup, drugIntake, null, this);
+    game.physics.arcade.overlap(player, pillGroup, drugIntake, null, this);
+    game.physics.arcade.overlap(player, ballGroup, drugIntake, null, this);
 }
