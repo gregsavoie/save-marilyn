@@ -2,26 +2,81 @@ var game = new Phaser.Game(800, 600, Phaser.AUTO, 'game',
         {preload: preload, create: create, update: update});
 
 var player;
-var cursors;
 var marilyn;
+var cursors;
 var pillGroup;
 var score = 0;
 var scoreText;
 var isOdd = true;
 var cmpt = 0
+var gameIsStarted = false;
+var gameIsFinished = false;
+var life_2_bool = true;
+var life_3_bool = true;
+var life1;
+var life2;
+var life3;
 
 
 function startGame() {
+    game.world.removeAll();
+    game.add.text(220, 300, "Hollywood Bld OF DRUGS!!", {fill: 'white'}); // background
+    scoreText = game.add.text(8, 8, 'score: 0', {fontSize: '18px', fill: 'white'}); // affichage du score;
+    player = game.add.sprite(350, 220, 'player', 1);
+    marilyn = game.add.sprite(getRandomPosX(), getRandomPosY(), 'marylin');
+    life1 = game.add.sprite(780, 5, 'blue_star');
+    life2 = game.add.sprite(770, 5, 'blue_star');
+    life3 = game.add.sprite(760, 5, 'blue_star');
+    life_3_bool = true;
+    life_2_bool = true;
+
+    pillGroup = game.add.group(); // pillGroup pour obstacles
+    pillGroup.enableBody = true;
+
+    game.physics.arcade.enable(marilyn);
+    game.physics.arcade.enable(player);
+    game.physics.arcade.enable(pillGroup);
+
+    /* setter le player... */
+    player.animations.add('left', [8, 9, 10, 11], 20, true);
+    player.animations.add('right', [4, 5, 6, 7], 20, true);
+    player.animations.add('up', [12, 13, 14, 15], 20, true);
+    player.animations.add('down', [0, 1, 2, 3], 20, true);
+    player.body.collideWorldBounds = true;
+
+    gameIsStarted = true;
+    gameIsFinished = false;
+    score = 0;
 }
 
-function youDieded(player, pill) {
+function youDieded() {
     game.world.removeAll();
     game.add.text(100, 150, 'Score: ' + score, {fill: 'white'});
     game.add.text(100, 200, 'You failed!', {fontSize: '26px', fill: 'white'});
     game.add.text(100, 250, 'Marilyn ODed... AGAIN!', {fontSize: '20px', fill: 'white'});
     game.add.sprite(400, 100, 'marilyn_fin');
 
-    game.add.text(100, 500, 'Press f5 to play again!', {fontSize: '14px', fill: 'white'});
+    game.add.text(100, 500, 'Press up arrow to play again!', {fontSize: '14px', fill: 'white'});
+    cursors = game.input.keyboard.createCursorKeys(); // linker les touches
+    gameIsFinished = true;
+}
+
+function drugIntake(player, pill) {
+    pill.kill();
+    if (life_3_bool)
+    {
+        life_3_bool = false;
+        life3.visible = false;
+    }
+    else if (life_2_bool)
+    {
+        life_2_bool = false;
+        life2.visible = false;
+    }
+    else
+    {
+        youDieded();
+    }
 }
 
 function createPill() {
@@ -78,31 +133,33 @@ function preload() {
     game.load.image('marylin', 'img/marylin.png');
     game.load.image('pill', 'img/pill.png');
     game.load.image('marilyn_fin', 'img/marilyn_fin.png');
+    game.load.image('blue_star', 'img/blue_star.png');
     game.load.spritesheet('player', 'img/player.png', 57.5, 75);
 }
 
 function create() {
-    game.add.text(220, 300, "Hollywood Bld OF DRUGS!!", {fill: 'white'}); // background
-    scoreText = game.add.text(8, 8, 'score: 0', {fontSize: '18px', fill: 'white'}); // affichage du score;
+    game.add.text(260, 50, "Save Marilyn!", {fontSize: '40px', fill: 'white'}); 
+    game.add.text(50, 150, 'Save Marilyn from ODing', {fontSize: '18px', fill: 'white'});
+    game.add.text(50, 180, 'Dodge the drugs so you don\'t become an addict', {fontSize: '18px', fill: 'white'});
+    game.add.text(50, 210, 'But be careful, the more you run, the more drug there is', {fontSize: '18px', fill: 'white'});
+    game.add.text(50, 240, 'You won\'t tolerate more than 3 doses', {fontSize: '18px', fill: 'white'});
+    game.add.text(50, 270, 'Don\'t take too much time, otherwise marilyn will explode!', {fontSize: '18px', fill: 'white'});
+    game.add.text(260, 370, 'GOOD LUCK!', {fontSize: '40px', fill: 'white'});
+    game.add.text(305, 540, 'Press up arrow to start', {fontSize: '14px', fill: 'white'});
+    player = game.add.sprite(350, 450, 'player', 1);
+    marilyn = game.add.sprite(300, 130, 'marylin');
+    game.add.sprite(480, 185, 'pill');
+    game.add.sprite(545, 215, 'pill');
+    game.add.sprite(370, 245, 'blue_star');
+    game.add.sprite(380, 245, 'blue_star');
+    game.add.sprite(390, 245, 'blue_star');
+
     game.physics.startSystem(Phaser.Physics.ARCADE); // starter la physique
-
-    marilyn = game.add.sprite(getRandomPosX(), getRandomPosY(), 'marylin'); // marilyn random
     game.physics.arcade.enable(marilyn);
-
-    pillGroup = game.add.group();
-    game.physics.arcade.enable(pillGroup);
-    pillGroup.enableBody = true;
+    game.physics.arcade.enable(player);
 
     cursors = game.input.keyboard.createCursorKeys(); // linker les touches
 
-    /* setter le player... */
-    player = game.add.sprite(350, 220, 'player', 1);
-    game.physics.arcade.enable(player);
-    player.animations.add('left', [8, 9, 10, 11], 20, true);
-    player.animations.add('right', [4, 5, 6, 7], 20, true);
-    player.animations.add('up', [12, 13, 14, 15], 20, true);
-    player.animations.add('down', [0, 1, 2, 3], 20, true);
-    player.body.collideWorldBounds = true;
 }
 
 function update() {
@@ -112,35 +169,55 @@ function update() {
     player.body.velocity.y = 0;
     if (cursors.left.isDown)
     {
-        //  Move to the left
-        player.body.velocity.x = -350;
+        if (gameIsStarted)
+        {
+            //  Move to the left
+            player.body.velocity.x = -350;
 
-        player.animations.play('left');
-        createPill();
+            player.animations.play('left');
+            createPill();
+        }
     }
     else if (cursors.right.isDown)
     {
-        //  Move to the right
-        player.body.velocity.x = 350;
+        if (gameIsStarted)
+        {
+            //  Move to the right
+            player.body.velocity.x = 350;
 
-        player.animations.play('right');
-        createPill();
+            player.animations.play('right');
+            createPill();
+        }
     }
     else if (cursors.up.isDown)
     {
-        //  Move up
-        player.body.velocity.y = -350;
+        if (gameIsStarted && !gameIsFinished)
+        {
+            //  Move up
+            player.body.velocity.y = -350;
 
-        player.animations.play('up');
-        createPill();
+            player.animations.play('up');
+            createPill();
+        }
+        else
+        {
+            startGame();
+        }
+        if (gameIsFinished)
+        {
+            startGame();
+        }
     }
     else if (cursors.down.isDown)
     {
-        //  Move down
-        player.body.velocity.y = 350;
+        if (gameIsStarted)
+        {
+            //  Move down
+            player.body.velocity.y = 350;
 
-        player.animations.play('down');
-        createPill();
+            player.animations.play('down');
+            createPill();
+        }
     }
     else
     {
@@ -148,5 +225,5 @@ function update() {
         player.animations.stop();
     }
     game.physics.arcade.overlap(player, marilyn, saveMarilyn, null, this);
-    game.physics.arcade.overlap(player, pillGroup, youDieded, null, this);
+    game.physics.arcade.overlap(player, pillGroup, drugIntake, null, this);
 }
