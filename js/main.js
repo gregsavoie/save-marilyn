@@ -170,9 +170,9 @@ function medKitTaken(player, medkit) {
 function drugIntake(player, obj) {
     obj.kill();
     game.time.events.add(0, removeOpacity, this);
-    game.time.events.add(50, putBackOpacity, this);
-    game.time.events.add(75, removeOpacity, this);
     game.time.events.add(100, putBackOpacity, this);
+    game.time.events.add(155, removeOpacity, this);
+    game.time.events.add(200, putBackOpacity, this);
     if (life_3_bool)
     {
         life_3_bool = false;
