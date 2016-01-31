@@ -20,10 +20,18 @@ var ballGroup;
 var counter = 0;
 var countdown = 0;
 
+function putBackOpacity() {
+    player.alpha = 1;
+}
+
+function removeOpacity() {
+    player.alpha = 0.2;
+}
+
 function updateCounter() {
 
 	counter++;
-	countdown.setText('Time to next Supernovae: ' + (10 - counter%11));
+	countdown.setText('Time to next Supernovae: ' + (5 - counter%6));
 }
 
 function explosionMenu() {
@@ -56,7 +64,7 @@ function explosion() {
 
     marilyn.reset(getRandomPosXForMarilyn(), getRandomPosYForMarilyn());
     counter = 0;
-    game.time.events.add(10000, explosion, this);
+    game.time.events.add(5000, explosion, this);
 }
 
 function startGame() {
@@ -96,11 +104,11 @@ function startGame() {
     game.physics.arcade.enable(ballGroup);
 
 
-	countdown = game.add.text(600, 20, 'Time to next Supernovae: 10', { fontSize: "18px", fill: "white"});
+	countdown = game.add.text(600, 20, 'Time to next Supernovae: 5', { fontSize: "18px", fill: "white"});
     countdown.anchor.setTo(0.5, 0.5);
 
 
-    game.time.events.add(10000, explosion, this);
+    game.time.events.add(5000, explosion, this);
     game.time.events.loop(Phaser.Timer.SECOND, updateCounter, this);
 }
 
@@ -119,6 +127,10 @@ function youDieded() {
 
 function drugIntake(player, obj) {
     obj.kill();
+    game.time.events.add(0, removeOpacity, this);
+    game.time.events.add(100, putBackOpacity, this);
+    game.time.events.add(150, removeOpacity, this);
+    game.time.events.add(200, putBackOpacity, this);
     if (life_3_bool)
     {
         life_3_bool = false;
@@ -206,7 +218,7 @@ function saveMarilyn(player, marilyn) {
     game.time.events.removeAll();
     counter = 0;
     game.time.events.loop(Phaser.Timer.SECOND, updateCounter, this);
-    game.time.events.add(10000, explosion, this);
+    game.time.events.add(5000, explosion, this);
 }
 
 function preload() {
