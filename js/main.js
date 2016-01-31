@@ -88,9 +88,9 @@ function startGame() {
     scoreText = game.add.text(8, 8, 'score: 0', {fontSize: '18px', fill: 'white'}); // affichage du score;
     player = game.add.sprite(350, 220, 'player', 1);
     marilyn = game.add.sprite(getRandomPosXForMarilyn(), getRandomPosYForMarilyn(true), 'marylin');
-    life1 = game.add.sprite(780, 5, 'blue_star');
-    life2 = game.add.sprite(770, 5, 'blue_star');
-    life3 = game.add.sprite(760, 5, 'blue_star');
+    life1 = game.add.sprite(765, 0, 'blue_star');
+    life2 = game.add.sprite(745, 0, 'blue_star');
+    life3 = game.add.sprite(725, 0, 'blue_star');
     life_3_bool = true;
     life_2_bool = true;
 
