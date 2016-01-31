@@ -2,7 +2,8 @@
 var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'game',
                {preload: preload, create: create, render: render});
 
-
+var counter = 0;
+var text = 0;
 
 function preload() {
     game.load.spritesheet('ball', 'img/projectile_glow_orange.png',32,32);
@@ -12,9 +13,6 @@ function preload() {
 
 
 function explosion() {
-
-    //balls = game.add.group();
-    //balls.enableBody = true; 
 
     exp = game.add.sprite(395,295, 'explosion');
     exp.anchor.setTo(0.5,0.5);
@@ -42,14 +40,23 @@ function create() {
 	balls = game.add.group();
     balls.enableBody = true; 
 
+	text = game.add.text(120, 32, 'Time to next Supernovae: 10', { font: "16px Arial", fill: "#ffffff"});
+    text.anchor.setTo(0.5, 0.5);
+
+
     game.physics.startSystem(Phaser.Physics.ARCADE);
     game.time.events.repeat(Phaser.Timer.SECOND*10,10,explosion, this);
+    game.time.events.loop(Phaser.Timer.SECOND, updateCounter, this);
 
    }
 
+function updateCounter() {
 
-function render() {
-    //game.debug.text("Time until event: " + game.time.events.duration.toFixed(0), 32, 32);
-	
+	counter++;
+	text.setText('Time to next Supernovae: ' + (10 - counter%11));
+}
+
+
+function render() {	
 }
 
