@@ -17,10 +17,52 @@ var life1;
 var life2;
 var life3;
 
+var counter = 0;
+var countdown = 0;
+
+function updateCounter() {
+
+	counter++;
+	countdown.setText('Time to next Supernovae: ' + (10 - counter%11));
+}
+
+function explosionMenu() {
+    var exp = game.add.sprite(680, 275, 'explosion');
+    exp.anchor.setTo(0.5,0.5);
+    exp.animations.add('explosion', [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24], 25, true);
+    exp.play('explosion');
+    exp.speed = 600;
+}
+
+function explosion() {
+    exp = game.add.sprite(marilyn.x + 17.5, marilyn.y + 22.5, 'explosion');
+    exp.anchor.setTo(0.5,0.5);
+    exp.animations.add('explosion',[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24],15,false);
+    exp.play('explosion');
+    exp.speed = 600;
+
+
+    for (var i = 0; i < 10; i++) {
+        var ball = balls.create(marilyn.x + 17.5, marilyn.y + 22.5, 'ball');
+        ball.anchor.setTo(0.5,0.5);
+        ball.animations.add('powerball',[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15],100,true);
+        ball.play('powerball');
+        ball.speed = 600;
+
+        ball.body.velocity.x = (Math.random()*(2)-1)*100;
+        ball.body.velocity.y = (Math.random()*(2)-1)*100;
+        ball.body.collideWorldBounds = false;
+    };
+
+    marilyn.reset(getRandomPosX(), getRandomPosY());
+    counter = 0;
+    game.time.events.add(10000, explosion, this);
+}
 
 function startGame() {
     game.world.removeAll();
-    game.add.text(220, 300, "Hollywood Bld OF DRUGS!!", {fill: 'white'}); // background
+    game.add.text(260, 300, "Hollywood Boulevard", {fill: 'white'}); // background
+    game.add.text(320, 330, "OF DRUGS!!", {fill: 'white'}); 
     scoreText = game.add.text(8, 8, 'score: 0', {fontSize: '18px', fill: 'white'}); // affichage du score;
     player = game.add.sprite(350, 220, 'player', 1);
     marilyn = game.add.sprite(getRandomPosX(), getRandomPosY(), 'marylin');
@@ -47,6 +89,17 @@ function startGame() {
     gameIsStarted = true;
     gameIsFinished = false;
     score = 0;
+
+    /* setter les explosions */
+	balls = game.add.group();
+    balls.enableBody = true; 
+
+	countdown = game.add.text(600, 20, 'Time to next Supernovae: 10', { fontSize: "18px", fill: "white"});
+    countdown.anchor.setTo(0.5, 0.5);
+
+
+    game.time.events.add(10000, explosion, this);
+    game.time.events.loop(Phaser.Timer.SECOND, updateCounter, this);
 }
 
 function youDieded() {
@@ -127,6 +180,10 @@ function saveMarilyn(player, marilyn) {
     marilyn.reset(getRandomPosX(), getRandomPosY());
     score += 20;
     scoreText.text = 'score: ' + score;
+    game.time.events.removeAll();
+    counter = 0;
+    game.time.events.loop(Phaser.Timer.SECOND, updateCounter, this);
+    game.time.events.add(10000, explosion, this);
 }
 
 function preload() {
@@ -135,6 +192,8 @@ function preload() {
     game.load.image('marilyn_fin', 'img/marilyn_fin.png');
     game.load.image('blue_star', 'img/blue_star.png');
     game.load.spritesheet('player', 'img/player.png', 57.5, 75);
+    game.load.spritesheet('ball', 'img/projectile_glow_orange.png',32,32);
+    game.load.spritesheet('explosion', 'img/explosion.png',64,64);
 }
 
 function create() {
@@ -144,6 +203,8 @@ function create() {
     game.add.text(50, 210, 'But be careful, the more you run, the more drug there is', {fontSize: '18px', fill: 'white'});
     game.add.text(50, 240, 'You won\'t tolerate more than 3 doses', {fontSize: '18px', fill: 'white'});
     game.add.text(50, 270, 'Don\'t take too much time, otherwise marilyn will explode!', {fontSize: '18px', fill: 'white'});
+    game.add.text(550, 275, '(Hollywood style...)', {fontSize: '10px', fill: 'white'});
+    game.time.events.repeat(Phaser.Timer.SECOND, 10, explosionMenu, this);
     game.add.text(260, 370, 'GOOD LUCK!', {fontSize: '40px', fill: 'white'});
     game.add.text(305, 540, 'Press up arrow to start', {fontSize: '14px', fill: 'white'});
     player = game.add.sprite(350, 450, 'player', 1);
@@ -225,5 +286,5 @@ function render() {
         player.animations.stop();
     }
     game.physics.arcade.overlap(player, marilyn, saveMarilyn, null, this);
-    game.physics.arcade.overlap(player, pillGroup, drugIntake, null, this);
+    //game.physics.arcade.overlap(player, pillGroup, drugIntake, null, this);
 }
