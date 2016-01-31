@@ -22,6 +22,7 @@ var countdown = 0;
 var nbBoules = 0;
 var pillSpeed = 0;
 var nbPills = 0;
+var medKitGroup;
 
 function putBackOpacity() {
     player.alpha = 1;
@@ -34,15 +35,17 @@ function removeOpacity() {
 function updateCounter() {
 
     counter++;
-    countdown.setText('Time to next Supernovae: ' + (5 - counter%6));
+    countdown.setText('Time to next Supernovae: ' + (4 - counter%5));
 }
 
 function updateDifficulty(){
     if (score % 100 == 0) {
         nbBoules  = nbBoules + 2;
-        //pillSpeed  = pillSpeed + 10;
         if (nbPills > 6) {nbPills = nbPills - 2;}
-        //game.add.text(getRandomPosX(),getRandomPosY(),nbPills,{fill: 'white'});
+    }
+    if (score % 200 == 0)
+    {
+        medKitGroup.create(getRandomPosXForMarilyn(), getRandomPosYForMarilyn(false), 'medkit')
     }
 }
 
@@ -74,8 +77,8 @@ function explosion() {
         ball.body.collideWorldBounds = false;
     }
 
-    marilyn.reset(getRandomPosXForMarilyn(), getRandomPosYForMarilyn());
-    game.time.events.add(5000, explosion, this);
+    marilyn.reset(getRandomPosXForMarilyn(), getRandomPosYForMarilyn(true));
+    game.time.events.add(4000, explosion, this);
 }
 
 function startGame() {
@@ -84,7 +87,7 @@ function startGame() {
     game.add.text(320, 330, "OF DRUGS!!", {fill: 'white'}); 
     scoreText = game.add.text(8, 8, 'score: 0', {fontSize: '18px', fill: 'white'}); // affichage du score;
     player = game.add.sprite(350, 220, 'player', 1);
-    marilyn = game.add.sprite(getRandomPosXForMarilyn(), getRandomPosYForMarilyn(), 'marylin');
+    marilyn = game.add.sprite(getRandomPosXForMarilyn(), getRandomPosYForMarilyn(true), 'marylin');
     life1 = game.add.sprite(780, 5, 'blue_star');
     life2 = game.add.sprite(770, 5, 'blue_star');
     life3 = game.add.sprite(760, 5, 'blue_star');
@@ -94,9 +97,13 @@ function startGame() {
     pillGroup = game.add.group(); // pillGroup pour obstacles
     pillGroup.enableBody = true;
 
+    medKitGroup = game.add.group();
+    medKitGroup.enableBody = true;
+
     game.physics.arcade.enable(marilyn);
     game.physics.arcade.enable(player);
     game.physics.arcade.enable(pillGroup);
+    game.physics.arcade.enable(medKitGroup);
 
     /* setter le player... */
     player.animations.add('left', [8, 9, 10, 11], 20, true);
@@ -120,11 +127,11 @@ function startGame() {
     game.physics.arcade.enable(ballGroup);
 
 
-    countdown = game.add.text(600, 20, 'Time to next Supernovae: 5', { fontSize: "18px", fill: "white"});
+    countdown = game.add.text(600, 20, 'Time to next Supernovae: 4', { fontSize: "18px", fill: "white"});
     countdown.anchor.setTo(0.5, 0.5);
 
 
-    game.time.events.add(5000, explosion, this);
+    game.time.events.add(4000, explosion, this);
     game.time.events.loop(Phaser.Timer.SECOND, updateCounter, this);
 
 }
@@ -142,12 +149,26 @@ function youDieded() {
     gameIsFinished = true;
 }
 
+function medKitTaken(player, medkit) {
+    medkit.kill();
+    if (!life_2_bool)
+    {
+        life2.visible = true; 
+        life_2_bool = true;
+    }
+    else if (!life_3_bool)
+    {
+        life3.visible = true; 
+        life_3_bool = true;
+    }
+}
+
 function drugIntake(player, obj) {
     obj.kill();
     game.time.events.add(0, removeOpacity, this);
-    game.time.events.add(100, putBackOpacity, this);
-    game.time.events.add(150, removeOpacity, this);
-    game.time.events.add(200, putBackOpacity, this);
+    game.time.events.add(25, putBackOpacity, this);
+    game.time.events.add(50, removeOpacity, this);
+    game.time.events.add(75, putBackOpacity, this);
     if (life_3_bool)
     {
         life_3_bool = false;
@@ -208,12 +229,16 @@ function getRandomPosXForMarilyn() {
     return posX;
 }
 
-function getRandomPosYForMarilyn() {
+function getRandomPosYForMarilyn(isMarilyn) {
     var world = new Phaser.World(game);
     var posY = Math.floor(Math.random() * world._height);
-    if (posY + 45 > world._height)
+    if (isMarilyn && posY + 45 > world._height)
     {
         posY = world._height - 45;
+    }
+    else if (!isMarilyn && posY + 35 > world._height)
+    {
+        posY = world._height - 35;
     }
     return posY;
 }
@@ -229,14 +254,14 @@ function getRandomPosY() {
 }
 
 function saveMarilyn(player, marilyn) {
-    marilyn.reset(getRandomPosXForMarilyn(), getRandomPosYForMarilyn());
-    score += 20;
+marilyn.reset(getRandomPosXForMarilyn(), getRandomPosYForMarilyn(true));
+score += 20;
     scoreText.text = 'score: ' + score;
     updateDifficulty();
     game.time.events.removeAll();
     counter = 0;
     game.time.events.loop(Phaser.Timer.SECOND, updateCounter, this);
-    game.time.events.add(5000, explosion, this);
+    game.time.events.add(4000, explosion, this);
 }
 
 function preload() {
@@ -244,6 +269,7 @@ function preload() {
     game.load.image('pill', 'img/pill.png');
     game.load.image('marilyn_fin', 'img/marilyn_fin.png');
     game.load.image('blue_star', 'img/blue_star.png');
+    game.load.image('medkit', 'img/medkit.png');
     game.load.spritesheet('player', 'img/player.png', 57.5, 75);
     game.load.spritesheet('ball', 'img/projectile_glow_orange.png',32,32);
     game.load.spritesheet('explosion', 'img/explosion.png',64,64);
@@ -257,6 +283,7 @@ function create() {
     game.add.text(50, 240, 'You won\'t tolerate more than 3 doses', {fontSize: '18px', fill: 'white'});
     game.add.text(50, 270, 'Don\'t take too much time, otherwise marilyn will explode!', {fontSize: '18px', fill: 'white'});
     game.add.text(550, 275, '(Hollywood style...)', {fontSize: '10px', fill: 'white'});
+    game.add.text(50, 305, 'You will receive a med kit every 200 points', {fontSize: '18px', fill: 'white'});
     game.time.events.repeat(Phaser.Timer.SECOND, 10, explosionMenu, this);
     game.add.text(260, 370, 'GOOD LUCK!', {fontSize: '40px', fill: 'white'});
     game.add.text(305, 540, 'Press up arrow to start', {fontSize: '14px', fill: 'white'});
@@ -267,6 +294,7 @@ function create() {
     game.add.sprite(370, 245, 'blue_star');
     game.add.sprite(380, 245, 'blue_star');
     game.add.sprite(390, 245, 'blue_star');
+    game.add.sprite(430, 295, 'medkit');
 
     game.physics.startSystem(Phaser.Physics.ARCADE); // starter la physique
     game.physics.arcade.enable(marilyn);
@@ -342,4 +370,5 @@ function render() {
     game.physics.arcade.overlap(player, marilyn, saveMarilyn, null, this);
     game.physics.arcade.overlap(player, pillGroup, drugIntake, null, this);
     game.physics.arcade.overlap(player, ballGroup, drugIntake, null, this);
+    game.physics.arcade.overlap(player, medKitGroup, medKitTaken, null, this);
 }
