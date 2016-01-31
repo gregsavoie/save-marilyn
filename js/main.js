@@ -1,5 +1,5 @@
-var game = new Phaser.Game(800, 600, Phaser.AUTO, 'game',
-        {preload: preload, create: create, update: update});
+var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'game',
+        {preload: preload, create: create, render: render});
 
 var player;
 var marilyn;
@@ -162,7 +162,7 @@ function create() {
 
 }
 
-function update() {
+function render() {
     isOdd = !isOdd;
     cmpt++;
     player.body.velocity.x = 0;

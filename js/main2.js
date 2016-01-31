@@ -1,81 +1,52 @@
-// Obstacle = function(game) {
 
-// 	Phaser.Sprite.call(this, game, game.world.randomX, game.world.randomY, 'star');
-// 	this.body.velocity.x = (Math.random()*(1)-0.5)*100;
-// 	this.body.velocity.y = (Math.random()*(0.5)+0.5)*100;
-// 	game.add.existing(this)
-// }
+var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'game',
+               {preload: preload, create: create, render: render});
 
-// Obstacle.prototype = Object.create(Phaser.Sprite.prototype);
-// Obstacle.prototype.constructor = Obstacle;
-// Obstacle.prototype.update = function(first_argument) {
-// };
 
-var game = new Phaser.Game(800, 600, Phaser.AUTO, 'game',
-               {preload: preload, create: create, update: update});
 
 function preload() {
-    game.load.image('star', 'img/blue_star.png');
+    game.load.spritesheet('ball', 'img/projectile_glow_orange.png',32,32);
+    game.load.spritesheet('explosion', 'img/explosion.png',64,64);
+
+}
+
+
+function explosion() {
+
+    balls = game.add.group();
+    balls.enableBody = true; 
+
+    exp = game.add.sprite(395,295, 'explosion');
+    exp.anchor.setTo(0.5,0.5);
+    exp.animations.add('explosion',[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24],15,false);
+    exp.play('explosion');
+    exp.speed = 600;
+
+
+    for (var i = 0; i < 20; i++) {
+        var ball = balls.create(400, 300,'ball');
+        ball.anchor.setTo(0.5,0.5);
+        ball.animations.add('powerball',[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15],100,true);
+        ball.play('powerball');
+        ball.speed = 600;
+
+        ball.body.velocity.x = (Math.random()*(2)-1)*100;
+        ball.body.velocity.y = (Math.random()*(2)-1)*100;
+        ball.body.collideWorldBounds = false;
+
+    };
 }
 
 function create() {
-    // game.add.text(340, 300, "Hello, world!", {fill: 'white'});
+
     game.physics.startSystem(Phaser.Physics.ARCADE);
-    var stars = game.add.group();
-    game.physics.arcade.enable(stars);    // On démarre le système physique
-    stars.enableBody = true; 
-    
-    
-    // for (var i = 0; i < 20; i++) {
-    // 	var star = stars.create(Math.random()*800, 0,'star');
-    // 	star.body.velocity.x = (Math.random()*(1)-0.5)*100;
-    // 	star.body.velocity.y = (Math.random()*(0.5)+0.5)*100;
-    // 	star.body.collideWorldBounds = false;
-    // 	var star = stars.create(0, Math.random()*600,'star');
-    // 	star.body.velocity.x = (Math.random()*(0.5)+0.5)*100;
-    // 	star.body.velocity.y = (Math.random()*(1)-0.5)*100;
-    // 	star.body.collideWorldBounds = false;
-    // 	var star = stars.create(800, Math.random()*600,'star');
-    // 	star.body.velocity.x = (Math.random()*(0.5)-1)*100;
-    // 	star.body.velocity.y = (Math.random()*(1)-0.5)*100;
-    // 	star.body.collideWorldBounds = false;
-    // 	var star = stars.create(Math.random()*800,600,'star');
-    // 	star.body.velocity.x = (Math.random()*(1)-0.5)*100;
-    // 	star.body.velocity.y = (Math.random()*(0.5)-1)*100;
-    // 	star.body.collideWorldBounds = false;
-    // };
+    game.time.events.repeat(Phaser.Timer.SECOND*10,10,explosion, this);
 
-    for (var i = 0; i < 30; i++) {
-    	var star = stars.create(400, 300,'star');
-    	star.body.velocity.x = (Math.random()*(2)-1)*100;
-    	star.body.velocity.y = (Math.random()*(2)-1)*100;
-    	star.body.collideWorldBounds = false;
+   }
 
-    };
 
-    // for (var i = 0; i < 20; i++) {
-    	
-    // };
-
-    // for (var i = 0; i < 20; i++) {
-    	
-    // };
-
-    // for (var i = 0; i < 20; i++) {
-    	
-    // };
-
-    // for (var i = 0; i < 12; i++) {
-    // 	var star = stars.create(i*50, 0,'star');
-    // 	//star.body.velocity.x = (Math.random()*(1)-0.5)*100;
-    // 	star.body.velocity.y = 100 //(Math.random()*(0.5)+0.5)*100;
-    // };
-
-    //star.body.collideWorldBounds = false; // Collision avec les bords du canvas
-}
-
-function update() {
-
+function render() {
+    //game.debug.text("Time until event: " + game.time.events.duration.toFixed(0), 32, 32);
 	
 }
 
