@@ -40,7 +40,7 @@ function updateCounter() {
 
 function updateDifficulty(){
     if (score % 80 == 0) {
-        nbBoules  = nbBoules + 2;
+        nbBoules  = nbBoules + 5;
         if (nbPills > 12) {nbPills = nbPills - 2;}
     }
     if (score % 100 == 0)
@@ -72,8 +72,8 @@ function explosion() {
         ball.play('powerball');
         ball.speed = 600;
         angle = Math.random()*(2*Math.PI);
-        ball.body.velocity.x = Math.cos(angle) * (Math.random()*0.5 + 0.5) * 100;
-        ball.body.velocity.y = Math.sin(angle) * (Math.random()*0.5 + 0.5) * 100;
+        ball.body.velocity.x = Math.cos(angle) * (Math.random()*0.3 + 0.7) * 100;
+        ball.body.velocity.y = Math.sin(angle) * (Math.random()*0.3 + 0.7) * 100;
         ball.body.collideWorldBounds = false;
     }
 
