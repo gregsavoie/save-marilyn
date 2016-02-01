@@ -35,7 +35,7 @@ function removeOpacity() {
 function updateCounter() {
 
     counter++;
-    countdown.setText('Supernovae in: ' + (4 - counter%5));
+    countdown.setText('Supernova in: ' + (4 - counter%5));
 }
 
 function updateDifficulty(){
@@ -127,7 +127,7 @@ function startGame() {
     game.physics.arcade.enable(ballGroup);
 
 
-    countdown = game.add.text(400, 30, 'Supernovae in: 4', { fontSize: "26px", fill: "white"});
+    countdown = game.add.text(400, 30, 'Supernova in: 4', { fontSize: "26px", fill: "white"});
     countdown.anchor.setTo(0.5, 0.5);
 
 
@@ -289,8 +289,8 @@ function create() {
     game.add.text(50, 180, 'Dodge the drugs so you don\'t become an addict', {fontSize: '18px', fill: 'white'});
     game.add.text(50, 210, 'But be careful, the more you run, the more drug there is', {fontSize: '18px', fill: 'white'});
     game.add.text(50, 240, 'You won\'t tolerate more than 3 doses', {fontSize: '18px', fill: 'white'});
-    game.add.text(50, 270, 'Don\'t take too much time, otherwise marilyn will explode!', {fontSize: '18px', fill: 'white'});
-    game.add.text(550, 275, '(Hollywood style...)', {fontSize: '10px', fill: 'white'});
+    game.add.text(50, 270, 'Don\'t take too much time, otherwise marilyn will go supernova !', {fontSize: '18px', fill: 'white'});
+    //game.add.text(550, 275, '(Hollywood style...)', {fontSize: '10px', fill: 'white'});
     game.add.text(50, 305, 'You will receive a med kit every 100 points', {fontSize: '18px', fill: 'white'});
     game.time.events.repeat(Phaser.Timer.SECOND, 10, explosionMenu, this);
     game.add.text(260, 370, 'GOOD LUCK!', {fontSize: '40px', fill: 'white'});
