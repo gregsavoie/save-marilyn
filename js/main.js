@@ -35,15 +35,15 @@ function removeOpacity() {
 function updateCounter() {
 
     counter++;
-    countdown.setText('Time to next Supernovae: ' + (4 - counter%5));
+    countdown.setText('Supernovae in: ' + (4 - counter%5));
 }
 
 function updateDifficulty(){
     if (score % 80 == 0) {
         nbBoules  = nbBoules + 2;
-        if (nbPills > 8) {nbPills = nbPills - 2;}
+        if (nbPills > 12) {nbPills = nbPills - 2;}
     }
-    if (score % 200 == 0)
+    if (score % 100 == 0)
     {
         medKitGroup.create(getRandomPosXForMarilyn(), getRandomPosYForMarilyn(false), 'medkit')
     }
@@ -127,7 +127,7 @@ function startGame() {
     game.physics.arcade.enable(ballGroup);
 
 
-    countdown = game.add.text(600, 20, 'Time to next Supernovae: 4', { fontSize: "18px", fill: "white"});
+    countdown = game.add.text(400, 30, 'Supernovae in: 4', { fontSize: "26px", fill: "white"});
     countdown.anchor.setTo(0.5, 0.5);
 
 
@@ -291,7 +291,7 @@ function create() {
     game.add.text(50, 240, 'You won\'t tolerate more than 3 doses', {fontSize: '18px', fill: 'white'});
     game.add.text(50, 270, 'Don\'t take too much time, otherwise marilyn will explode!', {fontSize: '18px', fill: 'white'});
     game.add.text(550, 275, '(Hollywood style...)', {fontSize: '10px', fill: 'white'});
-    game.add.text(50, 305, 'You will receive a med kit every 200 points', {fontSize: '18px', fill: 'white'});
+    game.add.text(50, 305, 'You will receive a med kit every 100 points', {fontSize: '18px', fill: 'white'});
     game.time.events.repeat(Phaser.Timer.SECOND, 10, explosionMenu, this);
     game.add.text(260, 370, 'GOOD LUCK!', {fontSize: '40px', fill: 'white'});
     game.add.text(305, 540, 'Press up arrow to start', {fontSize: '14px', fill: 'white'});
