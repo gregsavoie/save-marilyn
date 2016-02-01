@@ -71,9 +71,9 @@ function explosion() {
         ball.animations.add('powerball',[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15],100,true);
         ball.play('powerball');
         ball.speed = 600;
-
-        ball.body.velocity.x = Math.cos(Math.random()*(2*Math.PI)) * ((Math.random()*(1)+0.5)*100);
-        ball.body.velocity.y = Math.sin(Math.random()*(2*Math.PI)) * ((Math.random()*(1)+0.5)*100);
+        angle = Math.random()*(2*Math.PI);
+        ball.body.velocity.x = Math.cos(angle) * (Math.random()*0.5 + 0.5) * 100;
+        ball.body.velocity.y = Math.sin(angle) * (Math.random()*0.5 + 0.5) * 100;
         ball.body.collideWorldBounds = false;
     }
 
