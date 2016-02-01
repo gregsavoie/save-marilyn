@@ -50,7 +50,7 @@ function updateDifficulty(){
 }
 
 function explosionMenu() {
-    var exp = game.add.sprite(680, 275, 'explosion');
+    var exp = game.add.sprite(630, 275, 'explosion');
     exp.anchor.setTo(0.5,0.5);
     exp.animations.add('explosion', [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24], 25, true);
     exp.play('explosion');
