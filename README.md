@@ -11,7 +11,7 @@ My friend [c0ltrane](https://github.com/c0ltrane)  and [I](https://github.com/gr
 
 ## How?
 
-1. git clone  https://github.com/gregsavoie/gamejam-clibre.git
+1. git clone https://github.com/gregsavoie/save-marilyn.git
 2. open the file "index.html" in you favorite browser
 3. have fun!
 
